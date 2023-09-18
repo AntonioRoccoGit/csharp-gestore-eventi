@@ -9,7 +9,7 @@ namespace csharp_gestore_eventi.Classes
     internal class Event
     {
         private string _Title; 
-        private string _Data;
+        private DateTime _Data;
         private int _MaxCapacity;
 
         public string Title {
@@ -25,14 +25,13 @@ namespace csharp_gestore_eventi.Classes
                     throw new Exception("Inserire un Titolo valido");
             } 
         }
-        public string Data { 
+        public DateTime Data { 
             get { return _Data; }
             set { 
-                if( DateTime.Parse(value) > DateTime.Now)
+                if( value > DateTime.Now)
                     this._Data = value;
                 else
                     throw new Exception("Inserire una data valida");
-
             }
         }
         public int MaxCapacity { 
@@ -50,7 +49,7 @@ namespace csharp_gestore_eventi.Classes
         public Event(string title, string data, int maxCapacity)
         {
             this.Title = title;
-            this.Data = data;
+            this.Data = DateTime.Parse(data);
             this.MaxCapacity = maxCapacity;
             this.ReservedSeats = 0;
         }
@@ -60,13 +59,29 @@ namespace csharp_gestore_eventi.Classes
 
         public void ReservePlace(int n)
         {
-            if (DateTime.Parse(this.Data) < DateTime.Now)
+            if (this.Data < DateTime.Now)
                 throw new Exception("Siamo spiacenti l'evento è terminato");
 
             if (this.MaxCapacity < this.ReservedSeats + n)
                 throw new Exception($"Restano {this.MaxCapacity - this.ReservedSeats} disponibili");
 
             this.ReservedSeats = this.ReservedSeats + n;
+        }
+
+        public void CancelReservation(int n)
+        {
+            if (this.Data < DateTime.Now)
+                throw new Exception("Siamo spiacenti l'evento è terminato");
+
+            if (this.ReservedSeats < n)
+                throw new Exception($"Non è possibile disdire {n} {(n ==1 ? "prenotazione" : "prenotazioni")}");
+
+            this.ReservedSeats = this.ReservedSeats - n;
+        }
+
+        public override string ToString()
+        {
+            return $"\nEvento:\n\t\t{this.Data.ToString("dd/MM/yyyy")} -Titolo {this.Title}\n";
         }
 
 
