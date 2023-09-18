@@ -1,4 +1,5 @@
 ﻿using csharp_gestore_eventi.Classes;
+using csharp_gestore_eventi.Classes.Event;
 
 namespace csharp_gestore_eventi
 {
@@ -15,6 +16,10 @@ namespace csharp_gestore_eventi
             string eventData = "";
             int eventCapacity = 0;
 
+            //Conference variables
+            string speakerInfo = "";
+            double conferencePrice = 0;
+
             Console.WriteLine("Benvenuto al tuo gestionale eventi!!!\n");
 
             //add program
@@ -30,27 +35,56 @@ namespace csharp_gestore_eventi
 
             while (eventGenerated < eventsNumber)
             {
+                //controll the type of the events
+                Console.WriteLine($"Il tuo evento è una conferenza? si/no: ");
+                string isConference = Console.ReadLine();
+
                 //add event
                 Console.WriteLine($"Evento {eventGenerated + 1}/{eventsNumber}");
                 Console.WriteLine("Inserire Titolo");
                 eventTitle = Console.ReadLine();
                 Console.WriteLine();
 
-                Console.WriteLine("Inserire data 21/12/2000");
+                Console.WriteLine("Inserire data dd/MM/yyyy");
                 eventData = Console.ReadLine();
                 Console.WriteLine();
                 Console.WriteLine("Inserire posti disponibili");
                 eventCapacity = int.Parse(Console.ReadLine());
-                try
+                Console.WriteLine();
+
+                if (isConference == "si")
                 {
-                    Event event1 = new Event(eventTitle, eventData, eventCapacity);
-                    program1.SetEventList(event1);
-                    eventGenerated++;
-                }
-                catch(Exception ex) 
-                { 
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine("Inserire dati relatore");
+                    speakerInfo = Console.ReadLine();
                     Console.WriteLine();
+                    Console.WriteLine("Inserire prezzo");
+                    conferencePrice = double.Parse(Console.ReadLine());
+                    Console.WriteLine();
+                    try
+                    {
+                        Event event1 = new Event_Conference(eventTitle, eventData, eventCapacity, speakerInfo, conferencePrice);
+                        program1.SetEventList(event1);
+                        eventGenerated++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        Event event1 = new Event(eventTitle, eventData, eventCapacity);
+                        program1.SetEventList(event1);
+                        eventGenerated++;
+                    }
+                    catch(Exception ex) 
+                    { 
+                        Console.WriteLine(ex.ToString());
+                        Console.WriteLine();
+                    }
                 }
                 Console.WriteLine();
             }
@@ -61,8 +95,8 @@ namespace csharp_gestore_eventi
             //sort by date
             Console.WriteLine($"\nProva a ricercare un evento tramite data: (es. dd/MM/yyyy)");
             string dateChoice = Console.ReadLine();
-            program1.GetEventByDate(dateChoice);
-
+            List<Event> datedEvent = program1.GetEventsByDate(dateChoice);
+            ProgramEvent.PrintEventFromList(datedEvent);
             program1.DeleteList();
 
         }

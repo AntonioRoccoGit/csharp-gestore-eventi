@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace csharp_gestore_eventi.Classes
+namespace csharp_gestore_eventi.Classes.Event
 {
     public class ProgramEvent
     {
         public string Title { get; private set; }
-        public List<Event> EventList { get; private set;}
+        public List<Event> EventList { get; private set; }
 
         public ProgramEvent(string title)
         {
@@ -34,14 +34,16 @@ namespace csharp_gestore_eventi.Classes
         /// 
         /// </summary>
         /// <param name="date">dd/MM/yyyy</param>
-        public void GetEventByDate(string date)
+        public List<Event> GetEventsByDate(string date)
         {
             DateTime eventDate = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            List<Event> events = new List<Event>();
             foreach (var item in this.EventList)
             {
                 if(item.Date == eventDate)
-                    Console.WriteLine(item);
+                    events.Add(item);
             }
+            return events;
         }
 
         public void DeleteList()
@@ -54,11 +56,11 @@ namespace csharp_gestore_eventi.Classes
             return this.EventList.Count;
         }
 
-        public static void GetEventFromList(List<Event> list)
+        public static void PrintEventFromList(List<Event> list)
         {
             foreach (var item in list)
             {
-                Console.WriteLine(item);
+                Console.Write(item);
             }
         }
 
@@ -67,9 +69,9 @@ namespace csharp_gestore_eventi.Classes
             string message="";
             foreach (var item in this.EventList)
             {
-                message += $"\n\t {item.Date.ToString("dd/MM/yyyy")} -{item.Title}";
+                message += item.ToString();
             }
-            return $"{this.Title}:{message}";
+            return $"'{this.Title}' eventi in programma:\n{message}";
         }
     }
 }

@@ -5,54 +5,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace csharp_gestore_eventi.Classes
+namespace csharp_gestore_eventi.Classes.Event
 {
     public class Event
     {
-        private string _title; 
+        private string _title;
         private DateTime _date;
         private int _maxCapacity;
 
-        public string Title {
-            get 
+        public string Title
+        {
+            get
             {
                 return _title;
-                }
-            set 
+            }
+            set
             {
                 if (value != "")
-                    this._title = value;
+                    _title = value;
                 else
                     throw new Exception("Inserire un Titolo valido");
-            } 
+            }
         }
-        public DateTime Date { 
+        public DateTime Date
+        {
             get { return _date; }
-            set { 
-                if( value > DateTime.Now)
-                    this._date = value;
+            set
+            {
+                if (value > DateTime.Now)
+                    _date = value;
                 else
                     throw new Exception("Inserire una data valida");
             }
         }
-        public int MaxCapacity { 
+        public int MaxCapacity
+        {
             get { return _maxCapacity; }
-            private set 
+            private set
             {
                 if (value > 0)
-                    this._maxCapacity = value;
+                    _maxCapacity = value;
                 else
                     throw new Exception("Inserire una capienza maggiore di 0");
-            } 
+            }
         }
         public int ReservedSeats { get; private set; }
 
         public Event(string title, string date, int maxCapacity)
         {
-            this.Title = title;
-            this.Date = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            this.MaxCapacity = maxCapacity;
-            this.ReservedSeats = 0;
+            Title = title;
+            Date = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            MaxCapacity = maxCapacity;
+            ReservedSeats = 0;
         }
 
 
@@ -60,29 +64,29 @@ namespace csharp_gestore_eventi.Classes
 
         public void ReservePlace(int seats)
         {
-            if (this.Date < DateTime.Now)
+            if (Date < DateTime.Now)
                 throw new Exception("Siamo spiacenti l'evento è terminato");
 
-            if (this.MaxCapacity < this.ReservedSeats + seats)
-                throw new Exception($"Restano {this.MaxCapacity - this.ReservedSeats} disponibili");
+            if (MaxCapacity < ReservedSeats + seats)
+                throw new Exception($"Restano {MaxCapacity - ReservedSeats} disponibili");
 
-            this.ReservedSeats = this.ReservedSeats + seats;
+            ReservedSeats = ReservedSeats + seats;
         }
 
         public void CancelReservation(int seats)
         {
-            if (this.Date < DateTime.Now)
+            if (Date < DateTime.Now)
                 throw new Exception("Siamo spiacenti l'evento è terminato");
 
-            if (this.ReservedSeats < seats)
-                throw new Exception($"Non è possibile disdire {seats} {(seats ==1 ? "prenotazione" : "prenotazioni")}");
+            if (ReservedSeats < seats)
+                throw new Exception($"Non è possibile disdire {seats} {(seats == 1 ? "prenotazione" : "prenotazioni")}");
 
-            this.ReservedSeats = this.ReservedSeats - seats;
+            ReservedSeats = ReservedSeats - seats;
         }
 
         public override string ToString()
         {
-            return $"\nEvento:\n\t{this.Date.ToString("dd/MM/yyyy")} -Titolo: {this.Title}\n";
+            return $"\t{this.Date.ToString("dd/MM/yyyy")} - {this.Title}\n";
         }
 
 
