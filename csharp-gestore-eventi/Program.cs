@@ -10,6 +10,9 @@ namespace csharp_gestore_eventi
             string eventData = "";
             int eventCapacity = 0;
 
+            //add program
+            ProgramEvent program1 = new ProgramEvent("Ferragosto 2024");
+
             //add event
             Console.WriteLine("Benvenuto al tuo gestionale eventi!!!");
             Console.WriteLine();
@@ -29,6 +32,9 @@ namespace csharp_gestore_eventi
             Console.WriteLine("Riepilogo evento");
             Console.WriteLine(event1);
 
+            program1.SetEventList(event1);
+            Console.WriteLine(program1);
+
             Console.WriteLine("Desidera effettuare una prentoazione?  si/no");
             string choice = Console.ReadLine();
 
@@ -39,7 +45,25 @@ namespace csharp_gestore_eventi
                 event1.ReservePlace(seatNumber);
             }
 
-            Console.WriteLine($"Posti rimanenti: {event1.MaxCapacity - event1.ReservedSeats}\nTotale Biglietti Venduti: {event1.ReservedSeats}");
+            string wantCancel;
+         
+            Console.WriteLine($"Posti rimanenti: {event1.MaxCapacity - event1.ReservedSeats}\nTotale Biglietti Venduti: {event1.ReservedSeats}\n");
+            Console.WriteLine($"Disdire prenotazioni? si/no\n");
+            wantCancel = Console.ReadLine();
+
+            while (wantCancel == "si")
+            {
+                Console.WriteLine($"Quante sedute cancellare?\n");
+                int cancelledSeat = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                event1.CancelReservation(cancelledSeat);
+
+                Console.WriteLine($"Posti rimanenti: {event1.MaxCapacity - event1.ReservedSeats}\nTotale Biglietti Venduti: {event1.ReservedSeats}\n");
+                Console.WriteLine($"Continuare a disdire prenotazioni? si/no\n");
+                wantCancel = Console.ReadLine();
+            }
+
+
 
 
 

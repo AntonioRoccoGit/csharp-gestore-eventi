@@ -10,7 +10,7 @@ namespace csharp_gestore_eventi.Classes
     public class Event
     {
         private string _title; 
-        private DateTime _data;
+        private DateTime _date;
         private int _maxCapacity;
 
         public string Title {
@@ -26,11 +26,11 @@ namespace csharp_gestore_eventi.Classes
                     throw new Exception("Inserire un Titolo valido");
             } 
         }
-        public DateTime Data { 
-            get { return _data; }
+        public DateTime Date { 
+            get { return _date; }
             set { 
                 if( value > DateTime.Now)
-                    this._data = value;
+                    this._date = value;
                 else
                     throw new Exception("Inserire una data valida");
             }
@@ -47,10 +47,10 @@ namespace csharp_gestore_eventi.Classes
         }
         public int ReservedSeats { get; private set; }
 
-        public Event(string title, string data, int maxCapacity)
+        public Event(string title, string date, int maxCapacity)
         {
             this.Title = title;
-            this.Data = DateTime.ParseExact(data, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            this.Date = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             this.MaxCapacity = maxCapacity;
             this.ReservedSeats = 0;
         }
@@ -60,7 +60,7 @@ namespace csharp_gestore_eventi.Classes
 
         public void ReservePlace(int seats)
         {
-            if (this.Data < DateTime.Now)
+            if (this.Date < DateTime.Now)
                 throw new Exception("Siamo spiacenti l'evento è terminato");
 
             if (this.MaxCapacity < this.ReservedSeats + seats)
@@ -71,7 +71,7 @@ namespace csharp_gestore_eventi.Classes
 
         public void CancelReservation(int seats)
         {
-            if (this.Data < DateTime.Now)
+            if (this.Date < DateTime.Now)
                 throw new Exception("Siamo spiacenti l'evento è terminato");
 
             if (this.ReservedSeats < seats)
@@ -82,7 +82,7 @@ namespace csharp_gestore_eventi.Classes
 
         public override string ToString()
         {
-            return $"\nEvento:\n\t{this.Data.ToString("dd/MM/yyyy")} -Titolo: {this.Title}\n";
+            return $"\nEvento:\n\t{this.Date.ToString("dd/MM/yyyy")} -Titolo: {this.Title}\n";
         }
 
 
