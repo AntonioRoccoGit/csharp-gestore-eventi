@@ -20,11 +20,20 @@ namespace csharp_gestore_eventi.Classes
         }
 
         //**********************METHODS
+
+        /// <summary>
+        /// Add an event in the Program list
+        /// </summary>
+        /// <param name="item">Event to add</param>
         public void SetEventList(Event item)
         {
             this.EventList.Add(item);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="date">dd/MM/yyyy</param>
         public void GetEventByDate(string date)
         {
             DateTime eventDate = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -58,7 +67,7 @@ namespace csharp_gestore_eventi.Classes
             string message="";
             foreach (var item in this.EventList)
             {
-                message += $"\n\t {item.Date} -{item.Title}";
+                message += $"\n\t {item.Date.ToString("dd/MM/yyyy")} -{item.Title}";
             }
             return $"{this.Title}:{message}";
         }

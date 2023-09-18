@@ -6,69 +6,64 @@ namespace csharp_gestore_eventi
     {
         static void Main(string[] args)
         {
+            //Program variables
+            string programTitle = "";
+
+
+            //Event variables
             string eventTitle = "";
             string eventData = "";
             int eventCapacity = 0;
 
+            Console.WriteLine("Benvenuto al tuo gestionale eventi!!!\n");
+
             //add program
-            ProgramEvent program1 = new ProgramEvent("Ferragosto 2024");
+            Console.WriteLine("Aggiungere il titolo al nuovo programma\n");
+            programTitle = Console.ReadLine();
 
-            //add event
-            Console.WriteLine("Benvenuto al tuo gestionale eventi!!!");
-            Console.WriteLine();
-            Console.WriteLine("Inserire Titolo per un nuovo evento");
-            eventTitle = Console.ReadLine();
-            Console.WriteLine();
+            ProgramEvent program1 = new ProgramEvent(programTitle);
 
-            Console.WriteLine("Inserire data per il nuovo evento");
-            eventData = Console.ReadLine();
-            Console.WriteLine();
-            Console.WriteLine("Inserire sedute massime per il nuovo evento");
-            eventCapacity = int.Parse(Console.ReadLine());
+            //add events
+            Console.WriteLine("Insereire il numero di eventi da aggiungere");
+            int eventsNumber = int.Parse(Console.ReadLine());
+            int eventGenerated = 0;
 
-            Event event1 = new Event(eventTitle, eventData, eventCapacity);
-            Console.WriteLine();
-
-            Console.WriteLine("Riepilogo evento");
-            Console.WriteLine(event1);
-
-            program1.SetEventList(event1);
-            Console.WriteLine(program1);
-
-            Console.WriteLine("Desidera effettuare una prentoazione?  si/no");
-            string choice = Console.ReadLine();
-
-            if(choice == "si")
+            while (eventGenerated < eventsNumber)
             {
-                Console.WriteLine("Inserire numeo persone");
-                int seatNumber = int.Parse(Console.ReadLine());
-                event1.ReservePlace(seatNumber);
-            }
-
-            string wantCancel;
-         
-            Console.WriteLine($"Posti rimanenti: {event1.MaxCapacity - event1.ReservedSeats}\nTotale Biglietti Venduti: {event1.ReservedSeats}\n");
-            Console.WriteLine($"Disdire prenotazioni? si/no\n");
-            wantCancel = Console.ReadLine();
-
-            while (wantCancel == "si")
-            {
-                Console.WriteLine($"Quante sedute cancellare?\n");
-                int cancelledSeat = int.Parse(Console.ReadLine());
+                //add event
+                Console.WriteLine($"Evento {eventGenerated + 1}/{eventsNumber}");
+                Console.WriteLine("Inserire Titolo");
+                eventTitle = Console.ReadLine();
                 Console.WriteLine();
-                event1.CancelReservation(cancelledSeat);
 
-                Console.WriteLine($"Posti rimanenti: {event1.MaxCapacity - event1.ReservedSeats}\nTotale Biglietti Venduti: {event1.ReservedSeats}\n");
-                Console.WriteLine($"Continuare a disdire prenotazioni? si/no\n");
-                wantCancel = Console.ReadLine();
+                Console.WriteLine("Inserire data 21/12/2000");
+                eventData = Console.ReadLine();
+                Console.WriteLine();
+                Console.WriteLine("Inserire posti disponibili");
+                eventCapacity = int.Parse(Console.ReadLine());
+                try
+                {
+                    Event event1 = new Event(eventTitle, eventData, eventCapacity);
+                    program1.SetEventList(event1);
+                    eventGenerated++;
+                }
+                catch(Exception ex) 
+                { 
+                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
             }
 
+            Console.WriteLine($"\nNel programma sono presenti {program1.GetEventsNumber()} eventi");
+            Console.WriteLine($"\n{program1}");
 
+            //sort by date
+            Console.WriteLine($"\nProva a ricercare un evento tramite data: (es. dd/MM/yyyy)");
+            string dateChoice = Console.ReadLine();
+            program1.GetEventByDate(dateChoice);
 
-
-
-
-            
+            program1.DeleteList();
 
         }
     }
